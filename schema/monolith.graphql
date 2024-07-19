@@ -48,6 +48,7 @@ input registerUserInput {
     confirmPassword: String!
     gender: Gender!
     profilePhoto: Upload
+    role: UserRoles
   }
 
 input loginUserInput {

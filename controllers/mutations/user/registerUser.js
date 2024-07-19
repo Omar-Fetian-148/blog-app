@@ -6,7 +6,7 @@ import {
 } from "../../../utils/helpers.js";
 export default async (
   _,
-  { registerUserInput: { username, email, gender, password, confirmPassword } },
+  { registerUserInput: { username, email, role, gender, password, confirmPassword } },
   { language = 'en' }
 ) => {
   try {
@@ -20,7 +20,8 @@ export default async (
       username,
       email,
       password,
-      gender
+      gender,
+      role
     })
     await user.save()
 
