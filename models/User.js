@@ -4,15 +4,23 @@ import bcrypt from 'bcrypt';
 const userSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    minlength: 2,
+    maxlength: 32
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    minlength: 5,
   },
   email: {
     type: String,
     required: true,
+    trim: true,
+    minlength: 5,
+    maxlength: 32,
     unique: true,
     set: (v) => v.toLowerCase(),
   },
@@ -26,6 +34,25 @@ const userSchema = new Schema({
   token: {
     type: String,
   },
+  profilePhoto: {
+    type: String,
+    default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+  },
+  bio: {
+    type: String,
+  },
+  role: {
+    type: String,
+    enum: ['USER', 'ADMIN'],
+  },
+  gender: {
+    type: String,
+    enum: ['MALE', 'FEMALE'],
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  }
 }, { timestamps: true }
 )
 

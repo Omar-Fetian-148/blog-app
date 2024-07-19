@@ -11,7 +11,6 @@ export function mutationFailResponse(error) {
     helperMessage: error.message,
     data: null,
     token: null,
-    appVersion: null,
   };
 };
 
@@ -38,23 +37,6 @@ export function generateError(key, language) {
     extensions: {
       code: errorMessages[key]?.code,
       error: errorMessages[key]?.[language],
-    },
-  });
-};
-
-export function AuthenticationError() {
-  const authErrMessage = '*** you must be logged in ***';
-  return new GraphQLError(authErrMessage, {
-    extensions: {
-      code: 'UNAUTHENTICATED',
-    },
-  });
-};
-
-export function ForbiddenError(errMessage) {
-  return new GraphQLError(errMessage, {
-    extensions: {
-      code: 'FORBIDDEN',
     },
   });
 };

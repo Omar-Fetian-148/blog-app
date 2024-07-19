@@ -21,25 +21,25 @@ export default {
     ar: 'غير مصرح',
     en: 'unauthorized',
   },
-  userNotFound: {
+  passwordNotMatch: {
+    code: 401,
+    success: false,
+    message: 'PassWord Doesn\'t Match',
+    ar: 'كلمة سر غير مطابقة',
+    en: 'PassWord Doesn\'t Match',
+  },
+  userAlreadyExists: {
     code: 404,
     success: false,
-    message: 'user Not Found',
+    message: 'User Already Exists',
     ar: 'المستخدم غير موجود',
-    en: 'user Not Found',
+    en: 'User Already Exists',
   },
-  postNotFound: {
+  invalidEmailOrPassword: {
     code: 404,
     success: false,
-    message: 'post Not Found',
-    ar: 'المنشور غير موجود',
-    en: 'post Not Found',
+    message: 'Invalid Email Or Password',
+    ar: 'المستخدم غير موجود',
+    en: 'Invalid Email Or Password',
   },
-  commentNotFound: {
-    code: 404,
-    success: false,
-    message: 'comment Not Found',
-    ar: 'التعليق غير موجود',
-    en: 'comment Not Found',
-  }
 }

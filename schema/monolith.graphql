@@ -1,6 +1,75 @@
 "date scalar type used to represent a date in the system"
 scalar Date
+scalar Upload
 
+enum Language {
+  ar
+  en
+}
+
+enum UserRoles {
+  ADMIN
+  USER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+#---------------------------------Common typeDefs-----------------------------
+
+type MutationConfirmation {
+  code: Int!
+  success: Boolean!
+  message: String!
+}
+
+#---------------------------------User typeDefs-----------------------------
+type User {
+    id: ID
+    username: String
+    email: String
+    bio: String
+    token: String
+    profilePhoto: String
+    role: UserRoles
+    gender: Gender
+    isVerified: Boolean
+    lastLogin: Date
+    createdAt: Date
+    updatedAt: Date
+  }
+
+input registerUserInput {
+    username: String!
+    email: String!
+    password: String!
+    confirmPassword: String!
+    gender: Gender!
+    profilePhoto: Upload
+  }
+
+input loginUserInput {
+  email: String!
+  password: String!
+}
+
+type LoginUserResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  data: User
+}
+
+#================================================== Queries ===============================
 type Query {
   hello: String!
 }
+
+type Mutation {
+  #Users
+    registerUser(registerUserInput: registerUserInput): MutationConfirmation
+    loginUser(loginUserInput: loginUserInput): LoginUserResponse
+}
+

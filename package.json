@@ -9,7 +9,8 @@
   "description": "",
   "scripts": {
     "start": "node server.js",
-    "watch": "nodemon server.js",
+    "watch": "nodemon -L --ext js,graphql server.js",
+    "debug": "nodemon -L --ext js,graphql --inspect server.js",
     "publish-schema-dev": "rover subgraph publish e-commerce-app-123@development --schema ./schema/monolith.graphql --name monolith --routing-url https://e-commerce-app-development-460faaeb49de.herokuapp.com/graphql",
     "deploy-dev": "git push origin development"
   },
