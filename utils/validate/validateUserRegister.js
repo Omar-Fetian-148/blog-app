@@ -24,6 +24,4 @@ const validateUserRegister = Joi.object({
   }),
 });
 
-export default {
-  validateUserRegister,
-};
+export default validateUserRegister;

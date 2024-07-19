@@ -4,12 +4,23 @@ import {
   mutationSuccessResponse,
   generateError,
 } from "../../../utils/helpers.js";
+import validateUserRegister from "../../../utils/validate/validateUserRegister.js";
+
 export default async (
   _,
   { registerUserInput: { username, email, role, gender, password, confirmPassword } },
   { language = 'en' }
 ) => {
   try {
+
+    const { error } = validateUserRegister.validate(
+      {
+        username, email, password, confirmPassword
+      },
+      { abortEarly: false }
+    );
+    if (error) throw new Error(error.details.map((x) => x.message).join(', '));
+    
     const isExist = await User.findOne({ $or: [{ email }, { username }] })
     if (isExist) return generateError('userAlreadyExists', language)
 
