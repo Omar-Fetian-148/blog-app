@@ -56,4 +56,11 @@ export default {
     ar: 'المستخدم غير موجود',
     en: 'Email Is Not Verified',
   },
+  errorOccurred: {
+    code: 400,
+    success: false,
+    message: 'Error Occurred',
+    ar: 'المستخدم غير موجود',
+    en: 'Error Occurred',
+  },
 }

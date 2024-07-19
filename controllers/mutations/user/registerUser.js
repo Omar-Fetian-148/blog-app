@@ -1,3 +1,5 @@
+import { Readable } from 'stream';
+
 import User from '../../../models/User.js';
 import {
   mutationFailResponse,
@@ -7,10 +9,11 @@ import {
 } from "../../../utils/helpers.js";
 import validateUserRegister from "../../../utils/validate/validateUserRegister.js";
 import sendEmail from "../../../utils/sendEmail.js";
+import generateProfilePictureUrl from "../../../utils/generateProfilePictureUrl.js";
 
 export default async (
   _,
-  { registerUserInput: { username, email, role, gender, password, confirmPassword } },
+  { registerUserInput: { username, email, role, gender, password, confirmPassword, profilePicture } },
   { language = 'en' }
 ) => {
   try {
@@ -27,6 +30,15 @@ export default async (
 
     const matchedPass = password === confirmPassword ? true : false;
     if (!matchedPass) return generateError('passwordNotMatch', language)
+
+    if (profilePicture) {
+      const { createReadStream } = await profilePicture?.promise;
+      let profilePictureData = ''
+      const stream = createReadStream();
+
+      profilePictureData = (await generateProfilePictureUrl(stream,language));
+      user.profilePicture = profilePictureData
+    }
     
     const OTP = generateOTP(6)
 
@@ -39,9 +51,9 @@ export default async (
       OTP,
       OTPExpireDate : Date.now() + 3600000,
     })
-    await user.save()
+    //await user.save()
 
-    await sendEmail(email, OTP)
+    //await sendEmail(email, OTP)
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
     return mutationFailResponse(error);

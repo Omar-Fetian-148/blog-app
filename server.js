@@ -33,6 +33,7 @@ async function startApolloServer() {
     typeDefs,
     resolvers,
     introspection: true,
+    csrfPrevention: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   // Ensure we wait for our server to start
