@@ -27,29 +27,29 @@ type MutationConfirmation {
 
 #---------------------------------User typeDefs-----------------------------
 type User {
-    id: ID
-    username: String
-    email: String
-    bio: String
-    token: String
-    profilePhoto: String
-    role: UserRoles
-    gender: Gender
-    isVerified: Boolean
-    lastLogin: Date
-    createdAt: Date
-    updatedAt: Date
-  }
+  id: ID
+  username: String
+  email: String
+  bio: String
+  token: String
+  profilePhoto: String
+  role: UserRoles
+  gender: Gender
+  isVerified: Boolean
+  lastLogin: Date
+  createdAt: Date
+  updatedAt: Date
+}
 
 input registerUserInput {
-    username: String!
-    email: String!
-    password: String!
-    confirmPassword: String!
-    gender: Gender!
-    profilePhoto: Upload
-    role: UserRoles
-  }
+  username: String!
+  email: String!
+  password: String!
+  confirmPassword: String!
+  gender: Gender!
+  profilePhoto: Upload
+  role: UserRoles
+}
 
 input loginUserInput {
   email: String!
@@ -71,9 +71,9 @@ type Query {
 
 type Mutation {
   #Users
-    registerUser(registerUserInput: registerUserInput): MutationConfirmation
-    loginUser(loginUserInput: loginUserInput): LoginUserResponse
-    sendOTP(email: String): MutationConfirmation
-    checkOTP(email: String, OTP: Int): MutationConfirmation
+  registerUser(registerUserInput: registerUserInput): MutationConfirmation
+  loginUser(loginUserInput: loginUserInput): LoginUserResponse
+  sendOTP(email: String): MutationConfirmation
+  checkOTP(email: String, OTP: Int): MutationConfirmation
 }
 
