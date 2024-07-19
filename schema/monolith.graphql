@@ -65,12 +65,15 @@ type LoginUserResponse {
 
 #================================================== Queries ===============================
 type Query {
-  hello: String!
+  #Users
+  me: LoginUserResponse
 }
 
 type Mutation {
   #Users
     registerUser(registerUserInput: registerUserInput): MutationConfirmation
     loginUser(loginUserInput: loginUserInput): LoginUserResponse
+    sendOTP(email: String): MutationConfirmation
+    checkOTP(email: String, OTP: Int): MutationConfirmation
 }
 

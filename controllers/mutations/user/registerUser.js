@@ -3,8 +3,10 @@ import {
   mutationFailResponse,
   mutationSuccessResponse,
   generateError,
+  generateOTP,
 } from "../../../utils/helpers.js";
 import validateUserRegister from "../../../utils/validate/validateUserRegister.js";
+import sendEmail from "../../../utils/sendEmail.js";
 
 export default async (
   _,
@@ -12,7 +14,6 @@ export default async (
   { language = 'en' }
 ) => {
   try {
-
     const { error } = validateUserRegister.validate(
       {
         username, email, password, confirmPassword
@@ -26,16 +27,21 @@ export default async (
 
     const matchedPass = password === confirmPassword ? true : false;
     if (!matchedPass) return generateError('passwordNotMatch', language)
+    
+    const OTP = generateOTP(6)
 
     const user = new User({
       username,
       email,
       password,
       gender,
-      role
+      role,
+      OTP,
+      OTPExpireDate : Date.now() + 3600000,
     })
     await user.save()
 
+    await sendEmail(email, OTP)
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
     return mutationFailResponse(error);

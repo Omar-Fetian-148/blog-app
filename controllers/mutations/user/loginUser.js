@@ -12,8 +12,8 @@ export default async (
 ) => {
   try {
     const user = await User.findOne({ email })
-
     if (!user) return generateError('invalidEmailOrPassword', language)
+    if (!user.isVerified) return generateError('EmailIsNotVerified', language)
 
     const comparePass = await user.comparePassword(password)
     if (!comparePass) return generateError('invalidEmailOrPassword', language)
@@ -22,6 +22,7 @@ export default async (
       _id: user._id.toString(),
       email: user.email,
       username: user.username,
+      role: user.role
     }
 
     const token = generateJWT(userJWTData)

@@ -52,7 +52,17 @@ const userSchema = new Schema({
   isVerified: {
     type: Boolean,
     default: false
-  }
+  },
+  OTP: {
+    type: Number,
+  },
+  OTPExpireDate: {
+    type: Date
+  },
+  otpRequests: {
+    type: Number,
+    default: 0,
+  },
 }, { timestamps: true }
 )
 

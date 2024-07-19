@@ -42,4 +42,18 @@ export default {
     ar: 'المستخدم غير موجود',
     en: 'Invalid Email Or Password',
   },
+  invalidOTP: {
+    code: 400,
+    success: false,
+    message: 'Invalid OTP',
+    ar: 'المستخدم غير موجود',
+    en: 'Invalid OTP',
+  },
+  EmailIsNotVerified: {
+    code: 400,
+    success: false,
+    message: 'Email Is Not Verified',
+    ar: 'المستخدم غير موجود',
+    en: 'Email Is Not Verified',
+  },
 }
