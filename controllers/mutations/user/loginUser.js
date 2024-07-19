@@ -1,4 +1,3 @@
-import { GraphQLError } from 'graphql'
 import User from '../../../models/User.js';
 import { generateJWT } from '../../../utils/auth.js';
 import {
