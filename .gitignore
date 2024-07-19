@@ -1,0 +1,15 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+
+# Logs
+logs
+*.log
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode
+.vs/
+
+

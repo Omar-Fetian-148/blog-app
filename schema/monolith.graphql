@@ -1,0 +1,6 @@
+"date scalar type used to represent a date in the system"
+scalar Date
+
+type Query {
+  hello: String!
+}
