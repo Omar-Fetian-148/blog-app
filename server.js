@@ -9,6 +9,7 @@ import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { readFileSync } from "fs";
+import { rateLimit } from "express-rate-limit";
 //relative imports
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
@@ -36,9 +37,17 @@ async function startApolloServer() {
     csrfPrevention: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
-
+//to handle image uploads
   app.use(graphqlUploadExpress());
-  
+
+  //Rate Limiting
+  app.use(rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    limit: 5, // Limit each IP to 2 requests per `window` (here, per 10 minutes).
+    standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+  }))
+
   // Ensure we wait for our server to start
   await server.start();
 
