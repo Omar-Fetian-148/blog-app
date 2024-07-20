@@ -26,6 +26,7 @@
     "graphql-redis-subscriptions": "^2.6.1",
     "graphql-tag": "^2.12.6",
     "graphql-upload": "^16.0.2",
+    "helmet": "^7.1.0",
     "http": "^0.0.1-security",
     "ioredis": "^5.4.1",
     "joi": "^17.12.3",
