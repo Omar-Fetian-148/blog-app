@@ -54,7 +54,7 @@ const userSchema = new Schema({
     default: false
   },
   OTP: {
-    type: Number,
+    type: String,
   },
   OTPExpireDate: {
     type: Date

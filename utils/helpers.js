@@ -47,5 +47,5 @@ export function generateOTP(limit) {
   for (let i = 0; i < limit; i++) {
     OTP += digits[Math.floor(Math.random() * 10)];
   }
-  return OTP
+  return OTP.toString()
 }

@@ -70,6 +70,6 @@ type Mutation {
     password: String!
   ): LoginUserResponse
   sendOTP(email: String): MutationConfirmation
-  checkOTP(email: String, OTP: Int): MutationConfirmation
+  checkOTP(email: String, OTP: String): MutationConfirmation
 }
 
