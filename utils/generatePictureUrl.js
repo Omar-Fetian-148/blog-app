@@ -1,7 +1,7 @@
 import cloudinary from '../config/cloudinary.js';
 import {
   generateError,
-} from '../utils/helpers.js';
+} from './helpers.js';
 
 
 export default async (

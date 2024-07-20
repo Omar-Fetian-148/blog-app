@@ -7,7 +7,7 @@ import {
 } from "../../../utils/helpers.js";
 import validateUserRegister from "../../../utils/validate/validateUserRegister.js";
 import sendEmail from "../../../utils/sendEmail.js";
-import generateProfilePictureUrl from "../../../utils/generateProfilePictureUrl.js";
+import generatePictureUrl from "../../../utils/generatePictureUrl.js";
 
 export default async (
   _,
@@ -37,7 +37,7 @@ export default async (
 
       const stream = createReadStream();
 
-      profilePictureData = await generateProfilePictureUrl(stream, language);
+      profilePictureData = await generatePictureUrl(stream, language);
     }
     const OTP = generateOTP(6)
 
