@@ -90,11 +90,11 @@ async function startApolloServer() {
   });
 
   //
-  app.set('trust proxy', 1);
+  // app.set('trust proxy', 1);
   //Helmet helps secure Express apps by setting HTTP response headers.
-  app.use(helmet());
+  // app.use(helmet());
   //protect against HTTP Parameter Pollution attacks
-  app.use(hpp());
+  // app.use(hpp());
 
   //to handle image uploads
   app.use(graphqlUploadExpress());

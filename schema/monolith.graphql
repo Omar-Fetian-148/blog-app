@@ -62,7 +62,7 @@ type Post {
   updatedAt: Date
 }
 
-type ReadPostResponse {
+type readPostResponse {
   code: Int!
   success: Boolean!
   message: String!
@@ -76,6 +76,13 @@ type readAllPostsResponse {
   date: [Post]
 }
 
+type postSubscriptionResponse {
+  code: Int
+  success: Boolean
+  message: String
+  data: Post
+}
+
 #================================================== Queries ===============================
 type Query {
   #Users
@@ -84,7 +91,7 @@ type Query {
   #Posts
   readPost(
     postId: ID!
-  ): ReadPostResponse
+  ): readPostResponse
 
   readAllUserPosts(
     userId: ID!
@@ -118,5 +125,9 @@ type Mutation {
     category: String!
     image: Upload
   ): MutationConfirmation
+}
+
+type Subscription {
+  watchNewPosts: postSubscriptionResponse
 }
 

@@ -4,7 +4,9 @@ import readPost from "../../controllers/queries/post/readPost.js";
 
 //------------------------ Mutations -------------------------------------
 import createPost from "../../controllers/mutations/post/createPost.js";
-import { Query } from "mongoose";
+
+//------------------------ Subscriptions -------------------------------------
+import watchNewPosts from "../../controllers/Subscriptions/post/watchNewPosts.js";
 
 const postResolvers = {
   Query: {
@@ -12,6 +14,11 @@ const postResolvers = {
   },
   Mutation: {
     createPost,
+  },
+  Subscription: {
+    watchNewPosts: {
+      subscribe: watchNewPosts,
+    }
   }
 }
 
