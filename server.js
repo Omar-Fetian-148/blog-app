@@ -18,7 +18,9 @@ import { dirname, resolve } from 'path';
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
 import { verifyJWT } from './utils/auth.js';
+import { publisher, subscriber } from './config/redis.js';
 
+console.log(publisher, subscriber);
 dotenv.config()
 
 async function startApolloServer() {
@@ -105,11 +107,31 @@ async function startApolloServer() {
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 }
 
-
+async function shutdown() {
+  try {
+    // Close the Redis connection
+    publisher.disconnect();
+    subscriber.disconnect();
+    console.log('Redis connection closed.');
+  } catch (error) {
+    console.error('Error closing Redis connection:', error);
+  }
+  process.exit(0);
+}
 
 db.once('open', () => {
   startApolloServer().catch((error) => {
     console.error('Failed to start Apollo Server:', error);
     process.exit(1);
   });
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});
+
+process.on('SIGINT', async () => {
+  console.log('Server is shutting down...');
+  await shutdown();
 });
