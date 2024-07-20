@@ -21,7 +21,7 @@ export default async (
     }
 
     const user = await User.findById(auth?._id)
-    let flag = await setCache(`user:${auth?._id}`, user, 10);
+    let flag = await setCache(`user:${auth?._id}`, user, 10 * 60);
 
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
