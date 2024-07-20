@@ -12,6 +12,8 @@ import { readFileSync } from "fs";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import hpp from "hpp";
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 //relative imports
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
@@ -27,8 +29,10 @@ async function startApolloServer() {
   // enabling our servers to shut down gracefully.
   const httpServer = http.createServer(app);
 
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
   const typeDefs = gql(
-    readFileSync("./schema/monolith.graphql", { encoding: "utf8" })
+    readFileSync(resolve(__dirname, "./schema/monolith.graphql"), { encoding: "utf8" })
   );
   // Same ApolloServer initialization as before, plus the drain plugin
   // for our httpServer.
@@ -47,7 +51,7 @@ async function startApolloServer() {
   //protect against HTTP Parameter Pollution attacks
   app.use(hpp());
 
-//to handle image uploads
+  //to handle image uploads
   app.use(graphqlUploadExpress());
 
   //Rate Limiting
