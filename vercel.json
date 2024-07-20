@@ -11,5 +11,8 @@
       "src": "/(.*)",
       "dest": "/"
     }
+  ],
+  "files": [
+    "./schema/monolith.graphql"
   ]
 }
