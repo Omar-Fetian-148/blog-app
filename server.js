@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import { readFileSync } from "fs";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
+import hpp from "hpp";
 //relative imports
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
@@ -38,9 +39,11 @@ async function startApolloServer() {
     csrfPrevention: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
-  
+
   //Helmet helps secure Express apps by setting HTTP response headers.
   app.use(helmet());
+  //protect against HTTP Parameter Pollution attacks
+  app.use(hpp());
 
 //to handle image uploads
   app.use(graphqlUploadExpress());
