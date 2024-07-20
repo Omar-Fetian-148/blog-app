@@ -48,10 +48,49 @@ type LoginUserResponse {
   data: User
 }
 
+#--------------------------------- Post typeDefs-----------------------------
+
+type Post {
+  _id: ID
+  title: String
+  body: String
+  userId: User
+  category: String
+  image: String
+  likes: Int
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ReadPostResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  data: Post
+}
+
+type readAllPostsResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  date: [Post]
+}
+
 #================================================== Queries ===============================
 type Query {
   #Users
   me: LoginUserResponse
+
+  #Posts
+  readPost(
+    postId: ID!
+  ): ReadPostResponse
+
+  readAllUserPosts(
+    userId: ID!
+  ): readAllPostsResponse
+
+  readAllPosts: readAllPostsResponse
 }
 
 type Mutation {

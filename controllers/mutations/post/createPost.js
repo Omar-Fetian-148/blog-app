@@ -30,7 +30,8 @@ export default async (
     const post = new Post({
       title,
       body,
-      userId: new Types.ObjectId(auth?._id)
+      userId: new Types.ObjectId(auth?._id),
+      category
     })
 
     await post.save()
