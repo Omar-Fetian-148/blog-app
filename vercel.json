@@ -4,10 +4,6 @@
     {
       "src": "./schema/monolith.graphql", 
       "use": "@vercel/node"
-    },
-    {
-      "src": "!**",
-      "use": "@vercel/static"
     }
   ]
 }
