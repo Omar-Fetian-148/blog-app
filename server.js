@@ -53,7 +53,7 @@ async function startApolloServer() {
   //Rate Limiting
   app.use(rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
-    limit: 10, // Limit each IP to 2 requests per `window` (here, per 10 minutes).
+    limit: 100, // Limit each IP to 2 requests per `window` (here, per 10 minutes).
     standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     message: 'Too many requests from this IP, please try again later.',
