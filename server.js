@@ -4,6 +4,8 @@ import gql from "graphql-tag";
 import { expressMiddleware } from '@apollo/server/express4';
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { ApolloServerPluginInlineTraceDisabled } from '@apollo/server/plugin/disabled';
+import { buildSubgraphSchema } from '@apollo/subgraph';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -14,16 +16,27 @@ import helmet from "helmet";
 import hpp from "hpp";
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+
 //relative imports
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
 import { verifyJWT } from './utils/auth.js';
 import { publisher, subscriber } from './config/redis.js';
+import serverCleanupAuth from './utils/serverCleanupAuth.js';
 
-console.log(publisher, subscriber);
+
 dotenv.config()
 
 async function startApolloServer() {
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const typeDefs = gql(
+    readFileSync(resolve(__dirname, "./schema/monolith.graphql"), { encoding: "utf8" })
+  );
+
   // Required logic for integrating with Express
   const app = express();
   // Our httpServer handles incoming requests to our Express app.
@@ -31,11 +44,29 @@ async function startApolloServer() {
   // enabling our servers to shut down gracefully.
   const httpServer = http.createServer(app);
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  const typeDefs = gql(
-    readFileSync(resolve(__dirname, "./schema/monolith.graphql"), { encoding: "utf8" })
+  // Creating the WebSocket server
+  const wsServer = new WebSocketServer({
+    // This is the `httpServer` we created in a previous step.
+    server: httpServer,
+    // Pass a different path here if app.use
+    // serves expressMiddleware at a different path
+    path: '/graphql',
+  });
+
+  // Hand in the schema we just created and have the
+  // WebSocketServer start listening.
+  // Hand in the schema we just created and have the
+  // WebSocketServer start listening.
+  const serverCleanup = useServer(
+    {
+      schema: buildSubgraphSchema({ typeDefs, resolvers }),
+      context: async (ctx) => {
+        return serverCleanupAuth(ctx);
+      },
+    },
+    wsServer
   );
+
   // Same ApolloServer initialization as before, plus the drain plugin
   // for our httpServer.
   const server = new ApolloServer({
@@ -43,7 +74,19 @@ async function startApolloServer() {
     resolvers,
     introspection: true,
     csrfPrevention: false,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginInlineTraceDisabled(),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   });
 
   //
