@@ -15,7 +15,10 @@ export default async (
     if (!auth) return generateError('unauthorized', language)
 
     const cachedUserData = await getCache(`user:${auth?._id}`);
-    if (cachedUserData) return mutationSuccessResponse('successfulOperation', language, cachedUserData)
+    if (cachedUserData) {
+      console.log('Data Cached');
+      return mutationSuccessResponse('successfulOperation', language, cachedUserData)
+    }
 
     const user = await User.findById(auth?._id)
     let flag = await setCache(`user:${auth?._id}`, user, 10);
