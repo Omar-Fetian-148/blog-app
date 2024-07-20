@@ -1,0 +1,22 @@
+{
+  "version": 3,
+  "builds": [
+    {
+      "src": "./schema/monolith.graphql", 
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "nodejs/16"
+      }
+    },
+    {
+      "src": "!**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "./schema/graphql"
+    }
+  ]
+}
