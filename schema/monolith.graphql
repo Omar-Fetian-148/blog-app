@@ -32,28 +32,13 @@ type User {
   email: String
   bio: String
   token: String
-  profilePhoto: String
+  profilePicture: String
   role: UserRoles
   gender: Gender
   isVerified: Boolean
   lastLogin: Date
   createdAt: Date
   updatedAt: Date
-}
-
-input registerUserInput {
-  username: String!
-  email: String!
-  password: String!
-  confirmPassword: String!
-  gender: Gender!
-  profilePicture: Upload
-  role: UserRoles
-}
-
-input loginUserInput {
-  email: String!
-  password: String!
 }
 
 type LoginUserResponse {
@@ -71,8 +56,19 @@ type Query {
 
 type Mutation {
   #Users
-  registerUser(registerUserInput: registerUserInput): MutationConfirmation
-  loginUser(loginUserInput: loginUserInput): LoginUserResponse
+  registerUser(
+    username: String!
+    email: String!
+    password: String!
+    confirmPassword: String!
+    gender: Gender!
+    profilePicture: Upload
+    role: UserRoles!
+  ): MutationConfirmation
+  loginUser(
+    email: String!
+    password: String!
+  ): LoginUserResponse
   sendOTP(email: String): MutationConfirmation
   checkOTP(email: String, OTP: Int): MutationConfirmation
 }

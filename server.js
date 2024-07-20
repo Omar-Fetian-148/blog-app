@@ -2,6 +2,7 @@
 import { ApolloServer } from '@apollo/server';
 import gql from "graphql-tag";
 import { expressMiddleware } from '@apollo/server/express4';
+import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import express from 'express';
 import http from 'http';
@@ -26,7 +27,6 @@ async function startApolloServer() {
   const typeDefs = gql(
     readFileSync("./schema/monolith.graphql", { encoding: "utf8" })
   );
-
   // Same ApolloServer initialization as before, plus the drain plugin
   // for our httpServer.
   const server = new ApolloServer({
@@ -36,6 +36,9 @@ async function startApolloServer() {
     csrfPrevention: false,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+
+  app.use(graphqlUploadExpress());
+  
   // Ensure we wait for our server to start
   await server.start();
 

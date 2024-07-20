@@ -1,5 +1,3 @@
-import { Readable } from 'stream';
-
 import User from '../../../models/User.js';
 import {
   mutationFailResponse,
@@ -13,7 +11,7 @@ import generateProfilePictureUrl from "../../../utils/generateProfilePictureUrl.
 
 export default async (
   _,
-  { registerUserInput: { username, email, role, gender, password, confirmPassword, profilePicture } },
+  { username, email, role, gender, password, confirmPassword, profilePicture },
   { language = 'en' }
 ) => {
   try {
@@ -24,22 +22,23 @@ export default async (
       { abortEarly: false }
     );
     if (error) throw new Error(error.details.map((x) => x.message).join(', '));
-    
+
     const isExist = await User.findOne({ $or: [{ email }, { username }] })
     if (isExist) return generateError('userAlreadyExists', language)
 
     const matchedPass = password === confirmPassword ? true : false;
     if (!matchedPass) return generateError('passwordNotMatch', language)
 
+
+    let profilePictureData = '';
+
     if (profilePicture) {
       const { createReadStream } = await profilePicture?.promise;
-      let profilePictureData = ''
+
       const stream = createReadStream();
 
-      profilePictureData = (await generateProfilePictureUrl(stream,language));
-      user.profilePicture = profilePictureData
+      profilePictureData = await generateProfilePictureUrl(stream, language);
     }
-    
     const OTP = generateOTP(6)
 
     const user = new User({
@@ -49,13 +48,16 @@ export default async (
       gender,
       role,
       OTP,
-      OTPExpireDate : Date.now() + 3600000,
+      OTPExpireDate: Date.now() + 3600000,
+      profilePicture: profilePictureData
     })
-    //await user.save()
 
-    //await sendEmail(email, OTP)
+    await user.save()
+
+    await sendEmail(email, OTP)
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
+    console.error("Error in user registration:", error);
     return mutationFailResponse(error);
   }
 }

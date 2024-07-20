@@ -4,14 +4,18 @@ import {
 } from '../utils/helpers.js';
 
 
-export default async function generateProfilePictureUrl(stream, language) {
+export default async (
+  stream,
+  language
+)=> {
   const options = {
     use_filename: true,
     unique_filename: true,
     resource_type: 'auto',
-    folder: 'attachments',
+    folder: 'profilePicture',
     overwrite: true,
     quality: 'auto',
+    fetch_format: 'auto',
   };
 
   try {
@@ -31,14 +35,13 @@ export default async function generateProfilePictureUrl(stream, language) {
         stream.pipe(uploadStream);
       }
     );
-    console.log(uploadedFile);
     if (uploadedFile) {
       console.log(uploadedFile)
       return uploadedFile.secure_url;
     } else {
-      return generateError('errorOccurred', language);
+      return generateError('errorOcurred', language);
     }
   } catch (error) {
-    return generateError('errorOccurred', language);
+    return generateError('errorOcurred', language);
   }
 };

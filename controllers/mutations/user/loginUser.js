@@ -7,7 +7,7 @@ import {
 } from "../../../utils/helpers.js";
 export default async (
   _,
-  { loginUserInput: { email, password } },
+  { email, password },
   { language = 'en' }
 ) => {
   try {
