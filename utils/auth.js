@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { User } from "../models/index.js";
+import { generateError } from "../utils/helpers.js";
 dotenv.config()
 
 export function generateJWT(user) {
@@ -18,12 +20,29 @@ export function generateJWT(user) {
 }
 
 
-export function verifyJWT(req) {
-  let token = req.body.token || req.query.token || req.headers.authorization;
+export function verifyJWT(token) {
   if (token) {
     token = token.split(' ').pop().trim();
     const { data } = jwt.verify(token, process.env.TOKEN_SECRET, { maxAge: process.env.TOKEN_EXPIRATION });
     return data;
+  }
+}
+
+export async function authMiddleware(req) {
+  try {
+
+    const language = req.headers.language || 'en'
+    let token = req.body.token || req.query.token || req.headers.authorization || '';
+    if (!token) return req;
+
+    const decodedToken = await verifyJWT(token);
+
+    req.user = decodedToken;
+    req.authorization = token;
+    req.language = language;
+    return req
+  } catch (err) {
+    console.error('Authentication error:', err);
   }
 }
 

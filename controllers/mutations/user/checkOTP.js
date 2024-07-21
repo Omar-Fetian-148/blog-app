@@ -8,7 +8,7 @@ import {
 export default async (
   _,
   { OTP, email },
-  { language = 'en' }
+  { language }
 ) => {
   try {
     let user = await User.findOne({
@@ -18,7 +18,7 @@ export default async (
     })
 
     if (!user) return generateError('invalidOTP', language)
-    
+
     user.isVerified = true
     await user.save()
 

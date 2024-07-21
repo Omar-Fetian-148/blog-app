@@ -15,10 +15,9 @@ import { pubsub } from '../../../config/redis.js';
 export default async (
   _,
   { title, body, category },
-  { auth, language }
+  { user, language }
 ) => {
   try {
-    const user = await User.findById(auth?._id)
     if (!user) return generateError('unauthorized', language)
 
     const { error } = validatePost.validate(
@@ -32,7 +31,7 @@ export default async (
     const post = new Post({
       title,
       body,
-      userId: new Types.ObjectId(auth?._id),
+      userId: new Types.ObjectId(user?._id),
       category
     })
 

@@ -63,4 +63,18 @@ export default {
     ar: 'المستخدم غير موجود',
     en: 'Error Occurred',
   },
+  userNotFound: {
+    code: 404,
+    success: false,
+    message: 'User Not Found',
+    ar: 'المستخدم غير موجود',
+    en: 'User Not Found',
+  },
+  relationAlreadyExists: {
+    code: 404,
+    success: false,
+    message: 'Relation Already Exists',
+    ar: 'المستخدم غير موجود',
+    en: 'Relation Already Exists',
+  },
 }

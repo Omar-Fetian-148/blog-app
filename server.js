@@ -22,7 +22,7 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 //relative imports
 import resolvers from './schema/resolvers/resolvers.js';
 import db from './config/connection.js';
-import { verifyJWT } from './utils/auth.js';
+import { authMiddleware } from './utils/auth.js';
 import { publisher, subscriber } from './config/redis.js';
 import serverCleanupAuth from './utils/serverCleanupAuth.js';
 
@@ -90,23 +90,23 @@ async function startApolloServer() {
   });
 
   //
-  // app.set('trust proxy', 1);
+  app.set('trust proxy', 1);
   //Helmet helps secure Express apps by setting HTTP response headers.
-  // app.use(helmet());
+  app.use(helmet());
   //protect against HTTP Parameter Pollution attacks
-  // app.use(hpp());
+  app.use(hpp());
 
   //to handle image uploads
   app.use(graphqlUploadExpress());
 
-  //Rate Limiting
-  // app.use(rateLimit({
-  //   windowMs: 10 * 60 * 1000, // 10 minutes
-  //   limit: 100, // Limit each IP to 2 requests per `window` (here, per 10 minutes).
-  //   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-  //   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-  //   message: 'Too many requests from this IP, please try again later.',
-  // }))
+  // Rate Limiting
+  app.use(rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    limit: 1000, // Limit each IP to 2 requests per `window` (here, per 10 minutes).
+    standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    message: 'Too many requests from this IP, please try again later.',
+  }))
 
   // Ensure we wait for our server to start
   await server.start();
@@ -136,10 +136,7 @@ async function startApolloServer() {
     // expressMiddleware accepts the same arguments:
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
-      context: async ({ req }) => ({
-        auth: verifyJWT(req),
-        language: req.headers.language
-      }),
+      context: async ({ req }) => await authMiddleware(req),
     }),
   );
 

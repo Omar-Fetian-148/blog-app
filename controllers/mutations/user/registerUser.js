@@ -12,7 +12,7 @@ import generatePictureUrl from "../../../utils/generatePictureUrl.js";
 export default async (
   _,
   { username, email, role, gender, password, confirmPassword, profilePicture },
-  { language = 'en' }
+  { language }
 ) => {
   try {
     const { error } = validateUserRegister.validate(

@@ -11,10 +11,9 @@ import { getCache, setCache } from "../../../config/redis.js";
 export default async (
   _,
   { postId },
-  { language = 'en', auth }
+  { user, language }
 ) => {
   try {
-    const user = await User.findById(auth?._id)
     if (!user) return generateError('unauthorized', language)
 
     const cachedPostData = await getCache(`post:${postId}`);
@@ -27,6 +26,7 @@ export default async (
       path: 'userId',
       select: '-_id username profilePicture'
     });
+    
     await setCache(`post:${postId}`, post, 10 * 60);
 
     return mutationSuccessResponse('successfulOperation', language, post)

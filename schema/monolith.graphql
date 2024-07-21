@@ -118,6 +118,14 @@ type Mutation {
   sendOTP(email: String): MutationConfirmation
   checkOTP(email: String, OTP: String): MutationConfirmation
 
+  follow(
+    userId: ID
+  ): MutationConfirmation
+
+  unfollow(
+    userId: ID
+  ): MutationConfirmation
+
   #Posts
   createPost(
     title: String!

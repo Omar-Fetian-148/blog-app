@@ -9,21 +9,21 @@ import { getCache, setCache } from "../../../config/redis.js";
 export default async (
   _,
   __,
-  { language = 'en', auth }
+  { language = 'en', user }
 ) => {
   try {
-    if (!auth) return generateError('unauthorized', language)
+    if (!user) return generateError('unauthorized', language)
 
-    const cachedUserData = await getCache(`user:${auth?._id}`);
+    const cachedUserData = await getCache(`user:${user?._id}`);
     if (cachedUserData) {
       console.log('Data Cached');
       return mutationSuccessResponse('successfulOperation', language, cachedUserData)
     }
 
-    const user = await User.findById(auth?._id)
-    let flag = await setCache(`user:${auth?._id}`, user, 10 * 60);
+    const userData = await User.findById(user?._id)
+    await setCache(`user:${user?._id}`, user, 10 * 60);
 
-    return mutationSuccessResponse('successfulOperation', language, user)
+    return mutationSuccessResponse('successfulOperation', language, userData)
   } catch (error) {
     return mutationFailResponse(error);
   }
