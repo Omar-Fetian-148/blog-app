@@ -45,4 +45,22 @@ async function getCache(key) {
   }
 }
 
-export { publisher, subscriber, pubsub, setCache, getCache };
+// Queue helper functions
+async function enqueue(queueName, value) {
+  try {
+    await cacheClient.rpush(queueName, JSON.stringify(value));
+  } catch (error) {
+    console.error('Error enqueueing:', error);
+  }
+}
+
+async function dequeue(queueName) {
+  try {
+    const result = await cacheClient.lpop(queueName);
+    return result ? JSON.parse(result) : null;
+  } catch (error) {
+    console.error('Error dequeueing:', error);
+  }
+}
+
+export { publisher, subscriber, pubsub, setCache, getCache, enqueue, dequeue };
