@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { pubsub } from '../../../config/redis.js';
 import { withFilter } from 'graphql-subscriptions';
-import { User, Relationship } from "../../../models/index.js";
+import { User, Relationship } from "../../../data/models/index.js";
 import { generateError } from '../../../utils/helpers.js';
 const POST_CREATED = 'POST_CREATED';
 

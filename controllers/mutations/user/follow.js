@@ -1,7 +1,7 @@
 import {
   User,
   Relationship
-} from '../../../models/index.js';
+} from '../../../data/models/index.js';
 import { Types } from "mongoose";
 import {
   mutationFailResponse,
@@ -16,10 +16,10 @@ export default async (
 ) => {
   try {
     if (!user) return generateError('unauthorized', language)
-    
+
     const following = await User.findById(userId)
     if (!following) return generateError('userNotFound', language)
-    
+
     const isExist = await Relationship.findOne({
       userId: new Types.ObjectId(user?._id),
       followerId: new Types.ObjectId(userId),

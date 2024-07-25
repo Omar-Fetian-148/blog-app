@@ -1,8 +1,11 @@
 import nodemailer from "nodemailer";
+import hbs from 'nodemailer-express-handlebars';
+import path from "path";
+import { fileURLToPath } from 'url';
 import { config } from "dotenv";
 config()
 
-export default async function sendEmail(to, OTP) {
+export default async function sendEmail(to, OTP, OTPExpiryTime) {
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -14,11 +17,35 @@ export default async function sendEmail(to, OTP) {
       },
     });
 
+    let templateName = 'OTPTemp';
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const templatePath = path.resolve(__dirname, '../data/templates');
+
+    transporter.use(
+      'compile',
+      hbs({
+        viewPath: templatePath, // Use the absolute path to your template directory
+        extName: '.hbs',
+        viewEngine: {
+          extname: '.hbs',
+          partialsDir: templatePath,
+          layoutsDir: templatePath,
+          defaultLayout: `${templateName}.hbs`,
+        },
+      })
+    );
+
+
     const mailOptions = {
       from: process.env.NODEMAILER_USERNAME,
       to,
       subject: "Verify Your Email",
-      html: `<p>Your OTP: ${OTP}</p>`,
+      template: templateName,
+      context: {
+        ...(OTP && { otp: OTP }),
+        ...(OTPExpiryTime && { expiryTime: OTPExpiryTime }),
+      },
       headers: {
         priority: 'high',
       },

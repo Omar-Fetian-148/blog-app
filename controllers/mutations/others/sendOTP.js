@@ -1,4 +1,4 @@
-import User from '../../../models/User.js';
+import User from '../../../data/models/User.js';
 import {
   mutationFailResponse,
   mutationSuccessResponse,
@@ -13,17 +13,17 @@ export default async (
   { language = 'en' }
 ) => {
   try {
-    const user = await User.findOne({ email})
+    const user = await User.findOne({ email })
     if (!user) return generateError('invalidEmailOrPassword', language)
 
     const OTP = generateOTP(6)
-
+    const OTPExpiryTime = 3 * 60 * 1000
     user.OTP = OTP
-    user.OTPExpireDate = Date.now() + 3600000,
+    user.OTPExpireDate = Date.now() + OTPExpiryTime,
 
-    await user.save()
+      await user.save()
 
-    await sendEmail(email, OTP)
+    await sendEmail(email, OTP, OTPExpiryTime / (1000 * 60))
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
     return mutationFailResponse(error);

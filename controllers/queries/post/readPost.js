@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import Post from '../../../models/Post.js';
-import User from "../../../models/User.js";
+import Post from '../../../data/models/Post.js';
+import User from "../../../data/models/User.js";
 import {
   mutationFailResponse,
   mutationSuccessResponse,
@@ -26,7 +26,7 @@ export default async (
       path: 'userId',
       select: '-_id username profilePicture'
     });
-    
+
     await setCache(`post:${postId}`, post, 10 * 60);
 
     return mutationSuccessResponse('successfulOperation', language, post)

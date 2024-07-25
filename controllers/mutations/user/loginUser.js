@@ -1,4 +1,4 @@
-import User from '../../../models/User.js';
+import User from '../../../data/models/User.js';
 import { generateJWT } from '../../../utils/auth.js';
 import {
   mutationFailResponse,

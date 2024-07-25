@@ -1,4 +1,4 @@
-import User from '../../../models/User.js';
+import User from '../../../data/models/User.js';
 import {
   mutationFailResponse,
   mutationSuccessResponse,
@@ -41,6 +41,7 @@ export default async (
     }
     const OTP = generateOTP(6)
 
+    const OTPExpiryTime = 3 * 60 * 1000 //3 minutes
     const user = new User({
       username,
       email,
@@ -48,13 +49,13 @@ export default async (
       gender,
       role,
       OTP,
-      OTPExpireDate: Date.now() + 3600000,
+      OTPExpireDate: Date.now() + OTPExpiryTime,
       profilePicture: profilePictureData
     })
 
     await user.save()
 
-    await sendEmail(email, OTP)
+    await sendEmail(email, OTP, OTPExpiryTime / (1000 * 60))
     return mutationSuccessResponse('successfulOperation', language, user)
   } catch (error) {
     console.error("Error in user registration:", error);

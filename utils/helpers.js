@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
-import errorMessages from '../data/errorMessages.js';
-import successMessages from '../data/successMessages.js';
+import errorMessages from '../data/responseMessages/errorMessages.js';
+import successMessages from '../data/responseMessages/successMessages.js';
 
 
 export function mutationFailResponse(error) {

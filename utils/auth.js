@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { User } from "../models/index.js";
+import { User } from "../data/models/index.js";
 import { generateError } from "../utils/helpers.js";
 dotenv.config()
 
