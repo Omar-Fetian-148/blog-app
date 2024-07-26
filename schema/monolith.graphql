@@ -12,6 +12,11 @@ enum RelationTypes {
   FOLLOW
 }
 
+enum AdminBlockActions {
+  BLOCK
+  UNBLOCK
+}
+
 enum UserRoles {
   ADMIN
   GUEST
@@ -76,6 +81,7 @@ type Post {
   category: String
   image: String
   likes: Int
+  disLikes: Int
   createdAt: Date
   updatedAt: Date
 }
@@ -99,6 +105,25 @@ type postSubscriptionResponse {
   success: Boolean
   message: String
   data: Post
+}
+
+#---------------------------------Comment typeDefs-----------------------------
+type Comment {
+  _id: ID
+  body: String
+  userId: ID
+  postId: ID
+  likes: Int
+  disLikes: Int
+  createdAt: Date
+  updatedAt: Date
+
+}
+type commentSubscriptionResponse {
+  code: Int
+  success: Boolean
+  message: String
+  data: Comment
 }
 
 #================================================== Queries ===============================
@@ -133,6 +158,7 @@ type Mutation {
     email: String!
     password: String!
   ): LoginUserResponse
+  deleteUser(userId: ID!):MutationConfirmation
   sendOTP(email: String): MutationConfirmation
   checkOTP(email: String, OTP: String): MutationConfirmation
 
@@ -146,16 +172,31 @@ type Mutation {
     relationType: RelationTypes!
   ): MutationConfirmation
 
+  adminBlock(
+    userId: ID!,
+    action: AdminBlockActions!
+  ): MutationConfirmation
+
   #Posts
   createPost(
     title: String!
     body: String!
-    category: String!
+    category: Category!
     image: Upload
   ): MutationConfirmation
+  
+  
+  #Comments
+  createComment(
+    body: String!
+    postId: ID!
+  ): MutationConfirmation
+
+  deleteComment(commentId: String!): MutationConfirmation
 }
 
 type Subscription {
   watchNewPosts: postSubscriptionResponse
+  watchNewComments: commentSubscriptionResponse
 }
 

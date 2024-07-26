@@ -29,7 +29,6 @@ const postSchema = new Schema({
   },
   image: {
     type: String,
-    default: "https://cdn.pixabay.com/photo/2019/04/29/16/11/work-4166473_1280.png"
   },
   likes: {
     type: Number,

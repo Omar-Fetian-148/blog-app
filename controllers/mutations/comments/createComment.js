@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { User, Post } from '../../../data/models/index.js';
+import { User, Comment } from '../../../data/models/index.js';
 import { config } from "dotenv";
 config()
 import {
@@ -7,13 +7,13 @@ import {
   mutationSuccessResponse,
   generateError
 } from '../../../utils/helpers.js';
-import validatePost from "../../../utils/validate/validatePost.js";
+import validateComment from "../../../utils/validate/validateComment.js";
 import { pubsub } from '../../../config/redis.js';
 
 
 export default async (
   _,
-  { title, body, category },
+  { body, postId },
   { user, language }
 ) => {
   try {
@@ -26,34 +26,33 @@ export default async (
 
     if (isBlocked) return generateError('unauthorized', language)
 
-
-    const { error } = validatePost.validate(
+    
+    const { error } = validateComment.validate(
       {
-        title, body, category
+        body, postId
       },
       { abortEarly: false }
     );
     if (error) throw new Error(error.details.map((x) => x.message).join(', '));
 
-    const post = new Post({
-      title,
+    const comment = new Comment({
+      postId: new Types.ObjectId(postId),
       body,
       userId: new Types.ObjectId(user?._id),
-      category
     })
 
-    await post.save()
+    await comment.save()
 
-    post.userId = user
+    // comment.userId = user
 
     let data = {
       code: 200,
-      message: `Post is Created By ${user.username}`,
+      message: `Comment is Created By ${user.username}`,
       success: true,
-      data: post,
+      data: comment,
     }
 
-    await pubsub.publish('POST_CREATED', { watchNewPosts: data });
+    await pubsub.publish('COMMENT_CREATED', { watchNewComments: data });
 
     return mutationSuccessResponse('successfulOperation', language)
   } catch (error) {
