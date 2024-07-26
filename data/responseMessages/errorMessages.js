@@ -91,4 +91,11 @@ export default {
     ar: 'المستخدم غير موجود',
     en: 'Relation Not Possible',
   },
+  checkYourInput: {
+    code: 400,
+    success: false,
+    message: 'Check Your Input',
+    ar: 'المستخدم غير موجود',
+    en: 'Check Your Input',
+  }
 }

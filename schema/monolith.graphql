@@ -17,6 +17,11 @@ enum AdminBlockActions {
   UNBLOCK
 }
 
+enum LikeActions {
+  LIKE
+  DISLIKE
+}
+
 enum UserRoles {
   ADMIN
   GUEST
@@ -193,6 +198,13 @@ type Mutation {
   ): MutationConfirmation
 
   deleteComment(commentId: String!): MutationConfirmation
+
+  #like
+  toggleLike(
+    commentId: ID
+    postId: ID
+    action: LikeActions!
+  ): MutationConfirmation
 }
 
 type Subscription {

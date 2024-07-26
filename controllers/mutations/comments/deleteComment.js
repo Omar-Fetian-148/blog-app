@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { User, Comment } from '../../../data/models/index.js';
+import {  Comment } from '../../../data/models/index.js';
 import { config } from "dotenv";
 config()
 import {
@@ -7,9 +7,6 @@ import {
   mutationSuccessResponse,
   generateError
 } from '../../../utils/helpers.js';
-import validateComment from "../../../utils/validate/validateComment.js";
-import { pubsub } from '../../../config/redis.js';
-
 
 export default async (
   _,
