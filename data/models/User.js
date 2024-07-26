@@ -1,23 +1,24 @@
 import { model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { number } from 'joi';
 
 const userSchema = new Schema({
   username: {
     type: String,
-    required: true,
+    required: [true, 'username is required'],
     trim: true,
     minlength: 2,
     maxlength: 32
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'password is required'],
     trim: true,
     minlength: 5,
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'email is required'],
     trim: true,
     minlength: 5,
     maxlength: 32,
@@ -41,13 +42,19 @@ const userSchema = new Schema({
   bio: {
     type: String,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   role: {
     type: String,
-    enum: ['USER', 'ADMIN'],
+    enum: ['GUEST', 'ADMIN', 'EDITOR'],
+    default: 'GUEST'
   },
   gender: {
     type: String,
     enum: ['MALE', 'FEMALE'],
+    required: [true, 'gender is required'],
   },
   isVerified: {
     type: Boolean,
@@ -63,6 +70,21 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  postCount: {
+    type: Number,
+    default: 0,
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  lastActivity: {
+    type: Date,
+  }
 }, { timestamps: true }
 )
 

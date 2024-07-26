@@ -3,14 +3,14 @@ import { model, Schema } from 'mongoose';
 const postSchema = new Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'post title is required'],
     trim: true,
     minlength: 2,
     maxlength: 200
   },
   body: {
     type: String,
-    required: true,
+    required: [true, 'post body is required'],
     trim: true,
     minlength: 5,
   },
@@ -21,7 +21,8 @@ const postSchema = new Schema({
   },
   category: {
     type: String,
-    required: true,
+    required: [true, 'post category is required'],
+    enum: ['SPORT', 'TECH', 'NEWS ', 'ENTERTAINMENT', 'HEALTH', 'FINANCE', 'EDUCATION', 'SCIENCE', 'ART'],
     trim: true,
     minlength: 3,
     maxlength: 10
@@ -31,6 +32,10 @@ const postSchema = new Schema({
     default: "https://cdn.pixabay.com/photo/2019/04/29/16/11/work-4166473_1280.png"
   },
   likes: {
+    type: Number,
+    default: 0
+  },
+  disLikes: {
     type: Number,
     default: 0
   }

@@ -9,12 +9,25 @@ enum Language {
 
 enum UserRoles {
   ADMIN
-  USER
+  GUEST
+  EDITOR
 }
 
 enum Gender {
   MALE
   FEMALE
+}
+
+enum Category {
+  SPORT
+  TECH
+  NEWS 
+  ENTERTAINMENT 
+  HEALTH
+  FINANCE
+  EDUCATION
+  SCIENCE
+  ART
 }
 
 #---------------------------------Common typeDefs-----------------------------
