@@ -77,4 +77,18 @@ export default {
     ar: 'المستخدم غير موجود',
     en: 'Relation Already Exists',
   },
+  relationNotFound: {
+    code: 404,
+    success: false,
+    message: 'Relation Not Found',
+    ar: 'المستخدم غير موجود',
+    en: 'Relation Not Found',
+  },
+  relationNotPossible: {
+    code: 404,
+    success: false,
+    message: 'Relation Not Possible',
+    ar: 'المستخدم غير موجود',
+    en: 'Relation Not Possible',
+  },
 }

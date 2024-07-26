@@ -7,6 +7,11 @@ enum Language {
   en
 }
 
+enum RelationTypes {
+  BLOCK
+  FOLLOW
+}
+
 enum UserRoles {
   ADMIN
   GUEST
@@ -131,12 +136,14 @@ type Mutation {
   sendOTP(email: String): MutationConfirmation
   checkOTP(email: String, OTP: String): MutationConfirmation
 
-  follow(
-    userId: ID
+  createRelation(
+    userId: ID!,
+    relationType: RelationTypes!
   ): MutationConfirmation
 
-  unfollow(
-    userId: ID
+  deleteRelation(
+    userId: ID!,
+    relationType: RelationTypes!
   ): MutationConfirmation
 
   #Posts

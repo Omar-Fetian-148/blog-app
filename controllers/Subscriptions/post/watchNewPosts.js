@@ -18,8 +18,9 @@ export default async (
       const authorId = payload?.watchNewPosts?.data?.userId
 
       const hasRelation = await Relationship.findOne({
-        userId: new Types.ObjectId(authorId),
-        followerId: new Types.ObjectId(user?._id)
+        primaryUserId: new Types.ObjectId(authorId),
+        secondaryUserId: new Types.ObjectId(user?._id),
+        relationType: 'FOLLOW'
       })
       if (hasRelation) return true
       return false

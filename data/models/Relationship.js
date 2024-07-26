@@ -3,17 +3,19 @@ import { model, Schema } from 'mongoose';
 
 const relationshipSchema = new Schema(
   {
-    userId: {
+    primaryUserId: {
       type: Schema.Types.ObjectId,
-      ref: 'User', required: true
+      ref: 'User',
+      required: true
     },
-    followerId: {
+    secondaryUserId: {
       type: Schema.Types.ObjectId,
-      ref: 'User', required: true
+      ref: 'User',
+      required: true
     },
     relationType: {
       type: String,
-      enum: ['FRIEND', 'FOLLOW'],
+      enum: ['FOLLOW', 'BLOCK'],
       required: true
     },
   },

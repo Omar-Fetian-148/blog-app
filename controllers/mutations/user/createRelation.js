@@ -8,30 +8,39 @@ import {
   mutationSuccessResponse,
   generateError,
 } from "../../../utils/helpers.js";
-import { getCache, setCache } from "../../../config/redis.js";
+
 export default async (
   _,
-  { userId },
+  { userId, relationType },
   { language, user }
 ) => {
   try {
     if (!user) return generateError('unauthorized', language)
 
+    if (userId.toString() === user?._id.toString()) return generateError('relationNotPossible', language)
+
     const following = await User.findById(userId)
     if (!following) return generateError('userNotFound', language)
 
     const isExist = await Relationship.findOne({
-      userId: new Types.ObjectId(user?._id),
-      followerId: new Types.ObjectId(userId),
+      primaryUserId: new Types.ObjectId(userId),
+      secondaryUserId: new Types.ObjectId(user?._id),
     })
+
+    if (isExist?.relationType === 'FOLLOW' && relationType === 'BLOCK') {
+      isExist.relationType = 'BLOCK'
+      await isExist.save()
+      return mutationSuccessResponse('successfulOperation', language)
+    }
 
     if (isExist) return generateError('relationAlreadyExists', language)
 
     const relation = new Relationship({
-      userId: new Types.ObjectId(user?._id),
-      followerId: new Types.ObjectId(userId),
-      relationType: 'FOLLOW'
+      primaryUserId: new Types.ObjectId(userId),
+      secondaryUserId: new Types.ObjectId(user?._id),
+      relationType
     })
+
     await relation.save()
 
     return mutationSuccessResponse('successfulOperation', language)

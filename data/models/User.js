@@ -73,11 +73,11 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
-  isBlocked: {
+  isBlocked: { //only admin can change the value, if user is blocked he won't be able to post or comment
     type: Boolean,
     default: false,
   },
-  isActive: {
+  isActive: { //if the user (lastActivity) didn't post or comment for a while he'll be marked as inactive
     type: Boolean,
     default: true,
   },
