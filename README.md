@@ -1,7 +1,7 @@
 # Blog App APIs
 
 ## Overview
-This Blog API is built using Node.js, JavaScript, GraphQL, WebSocket, Redis, and MongoDB. The application allows users to create, delete, and edit users, comments, and posts. Users can like or dislike posts or comments, follow or block other users, and receive notifications via subscriptions when followed users post new content or when someone comments on their posts.
+This Blog API is built using Node.js, JavaScript, GraphQL, WebSocket, Redis, and MongoDB. The application allows users to create, delete, and edit users, the user can verify this email is correct by OTP sent to his email, comments, and posts. Users can like or dislike posts or comments, follow or block other users, and receive notifications via subscriptions when followed users post new content or when someone comments on their posts.
 
 ## Features
 - **User Management**: Create, delete, and edit user profiles.
@@ -20,6 +20,7 @@ This Blog API is built using Node.js, JavaScript, GraphQL, WebSocket, Redis, and
 - **Helmet**: Security middleware for HTTP headers.
 - **HPP**: HTTP parameter pollution prevention.
 - **RateLimit**: Rate limiting middleware.
+- **Nodemailer**: For sending emails to the user.
 
 ### Prerequisites
 - Node.js
