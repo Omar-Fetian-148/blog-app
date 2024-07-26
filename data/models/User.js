@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { number } from 'joi';
 
 const userSchema = new Schema({
   username: {
