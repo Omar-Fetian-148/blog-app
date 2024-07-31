@@ -53,8 +53,6 @@ export default async (
     const data = await Post.aggregate(pipeLine)
     const post = data[0] ?? []
 
-    console.log(post);
-
     await setCache(`post:${postId}`, post, 10 * 60);
 
     return mutationSuccessResponse('successfulOperation', language, post)
