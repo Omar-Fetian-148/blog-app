@@ -3,6 +3,7 @@
 //------------------------ Mutations -------------------------------------
 import createComment from "../../controllers/mutations/comments/createComment.js";
 import deleteComment from "../../controllers/mutations/comments/deleteComment.js";
+import toggleLikeComment from "../../controllers/mutations/comments/toggleLikeComment.js";
 
 //------------------------ Subscriptions -------------------------------------
 import watchNewComments from "../../controllers/Subscriptions/comment/watchNewComments.js";
@@ -10,7 +11,8 @@ import watchNewComments from "../../controllers/Subscriptions/comment/watchNewCo
 const commentResolvers = {
   Mutation: {
     createComment,
-    deleteComment
+    deleteComment,
+    toggleLikeComment
   },
   Subscription: {
     watchNewComments: {

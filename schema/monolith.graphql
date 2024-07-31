@@ -200,10 +200,12 @@ type Mutation {
   deleteComment(commentId: String!): MutationConfirmation
 
   #like
-  toggleLike(
-    commentId: ID
-    postId: ID
-    action: LikeActions!
+  toggleLikePost(
+    postId: ID!
+  ): MutationConfirmation
+
+  toggleLikeComment(
+    commentId: ID!
   ): MutationConfirmation
 }
 
