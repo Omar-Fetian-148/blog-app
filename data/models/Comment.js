@@ -21,10 +21,6 @@ const commentSchema = new Schema({
     type: Number,
     default: 0
   },
-  disLikes: {
-    type: Number,
-    default: 0
-  }
 }, { timestamps: true }
 )
 

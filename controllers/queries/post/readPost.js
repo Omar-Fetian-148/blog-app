@@ -22,10 +22,38 @@ export default async (
       return mutationSuccessResponse('successfulOperation', language, cachedPostData)
     }
 
-    const post = await Post.findById(postId).populate({
-      path: 'userId',
-      select: '-_id username profilePicture'
-    });
+    const pipeLine = [
+      {
+        $lookup: {
+          from: 'useractions',
+          pipeline: [
+            {
+              $match: {
+                userId: new Types.ObjectId(user?._id),
+                postId: new Types.ObjectId(postId),
+              }
+            }
+          ],
+          as: 'isThereALike'
+        }
+      },
+      {
+        $addFields: {
+          isLiked: {
+            $cond: {
+              if: { $eq: [{ $size: "$isThereALike" }, 0] },
+              then: false,
+              else: true
+            }
+          }
+        }
+      }
+    ]
+
+    const data = await Post.aggregate(pipeLine)
+    const post = data[0] ?? []
+
+    console.log(post);
 
     await setCache(`post:${postId}`, post, 10 * 60);
 

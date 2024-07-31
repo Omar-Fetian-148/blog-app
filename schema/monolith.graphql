@@ -53,6 +53,12 @@ type MutationConfirmation {
   message: String!
 }
 
+type Pagination {
+  totalDocuments: Int
+  viewLimit: Int
+  cursor: String
+}
+
 #---------------------------------User typeDefs-----------------------------
 type User {
   _id: ID
@@ -69,7 +75,7 @@ type User {
   updatedAt: Date
 }
 
-type LoginUserResponse {
+type ReadUserResponse {
   code: Int!
   success: Boolean!
   message: String!
@@ -86,31 +92,30 @@ type Post {
   category: String
   image: String
   likes: Int
-  disLikes: Int
+  isLiked: Boolean
   createdAt: Date
   updatedAt: Date
 }
 
-type readPostResponse {
+type ReadPostResponse {
   code: Int!
   success: Boolean!
   message: String!
   data: Post
 }
 
-type readAllPostsResponse {
+type PaginatedPosts {
+  list: [Post]
+  pagination: Pagination
+}
+
+type ReadPostsResponse {
   code: Int!
   success: Boolean!
   message: String!
-  date: [Post]
+  data: PaginatedPosts
 }
 
-type postSubscriptionResponse {
-  code: Int
-  success: Boolean
-  message: String
-  data: Post
-}
 
 #---------------------------------Comment typeDefs-----------------------------
 type Comment {
@@ -119,33 +124,43 @@ type Comment {
   userId: ID
   postId: ID
   likes: Int
-  disLikes: Int
+  isLiked: Boolean
   createdAt: Date
   updatedAt: Date
 
 }
-type commentSubscriptionResponse {
+
+type ReadCommentResponse {
   code: Int
   success: Boolean
   message: String
   data: Comment
 }
 
+type ReadCommentsResponse {
+  code: Int
+  success: Boolean
+  message: String
+  data: [Comment]
+}
+
 #================================================== Queries ===============================
 type Query {
   #Users
-  me: LoginUserResponse
+  me: ReadUserResponse
+
+  readUserProfile(userId: ID!): ReadUserResponse
 
   #Posts
-  readPost(
-    postId: ID!
-  ): readPostResponse
+  readPostsForHome: ReadPostsResponse
 
-  readAllUserPosts(
-    userId: ID!
-  ): readAllPostsResponse
+  readMyPosts: ReadPostsResponse
 
-  readAllPosts: readAllPostsResponse
+  readPost(postId: ID!): ReadPostResponse
+
+  #Comments
+  readComments(postId: ID!): ReadCommentsResponse
+
 }
 
 type Mutation {
@@ -162,7 +177,7 @@ type Mutation {
   loginUser(
     email: String!
     password: String!
-  ): LoginUserResponse
+  ): ReadUserResponse
   deleteUser(userId: ID!):MutationConfirmation
   sendOTP(email: String): MutationConfirmation
   checkOTP(email: String, OTP: String): MutationConfirmation
@@ -210,7 +225,7 @@ type Mutation {
 }
 
 type Subscription {
-  watchNewPosts: postSubscriptionResponse
-  watchNewComments: commentSubscriptionResponse
+  watchNewPosts: ReadPostResponse
+  watchNewComments: ReadCommentResponse
 }
 
