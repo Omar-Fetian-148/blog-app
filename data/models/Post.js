@@ -25,7 +25,7 @@ const postSchema = new Schema({
     enum: ['SPORT', 'TECH', 'NEWS ', 'ENTERTAINMENT', 'HEALTH', 'FINANCE', 'EDUCATION', 'SCIENCE', 'ART'],
     trim: true,
     minlength: 3,
-    maxlength: 10
+    maxlength: 20
   },
   image: {
     type: String,

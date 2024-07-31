@@ -12,7 +12,7 @@ const validatePost = Joi.object({
     'string.email': 'Body must be a valid email',
     'any.required': 'Body is required',
   }),
-  category: Joi.string().min(3).max(10).required().messages({
+  category: Joi.string().min(3).max(20).required().messages({
     'string.empty': 'Category cannot be empty',
     'string.min': 'Category must be at least 6 characters long',
     'any.required': 'Category is required',

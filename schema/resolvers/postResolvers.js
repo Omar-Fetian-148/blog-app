@@ -1,5 +1,6 @@
 //------------------------ Queries -------------------------------------
 import readPost from "../../controllers/queries/post/readPost.js";
+import readMyPosts from "../../controllers/queries/post/readMyPosts.js";
 
 
 //------------------------ Mutations -------------------------------------
@@ -11,7 +12,8 @@ import watchNewPosts from "../../controllers/Subscriptions/post/watchNewPosts.js
 
 const postResolvers = {
   Query: {
-    readPost
+    readPost,
+    readMyPosts
   },
   Mutation: {
     createPost,

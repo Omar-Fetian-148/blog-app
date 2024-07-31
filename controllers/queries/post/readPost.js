@@ -51,7 +51,7 @@ export default async (
     ]
 
     const data = await Post.aggregate(pipeLine)
-    const post = data[0] ?? []
+    const post = data[0] ?? {}
 
     await setCache(`post:${postId}`, post, 10 * 60);
 

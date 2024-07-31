@@ -105,8 +105,8 @@ type ReadPostResponse {
 }
 
 type PaginatedPosts {
-  list: [Post]
   pagination: Pagination
+  list: [Post]
 }
 
 type ReadPostsResponse {
