@@ -154,7 +154,7 @@ type Query {
   #Posts
   readPostsForHome: ReadPostsResponse
 
-  readMyPosts: ReadPostsResponse
+  readMyPosts(page: Int): ReadPostsResponse
 
   readPost(postId: ID!): ReadPostResponse
 

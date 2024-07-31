@@ -10,20 +10,20 @@ import { getCache, setCache } from "../../../config/redis.js";
 
 export default async (
   _,
-  __,
+  { page },
   { user, language }
 ) => {
   try {
     if (!user) return generateError('unauthorized', language)
-    const page = 1
+    if (!page || page <= 0) page = 1
     const viewLimit = 5;
     const skip = (page - 1) * viewLimit;
 
-    // const cachedPostData = await getCache(`userPosts:${user?._id}`);
+    const cachedPostData = await getCache(`userPosts:${user?._id}`);
 
-    // if (cachedPostData) {
-    // return mutationSuccessResponse('successfulOperation', language, cachedPostData)
-    // }
+    if (cachedPostData) {
+    return mutationSuccessResponse('successfulOperation', language, cachedPostData)
+    }
 
     const pipeLine = [
       {
@@ -32,7 +32,7 @@ export default async (
             {
               $lookup: {
                 from: 'useractions',
-                let: { postId: "$postId" },
+                let: { postId: "$_id" },  // Ensure correct field name here
                 pipeline: [
                   {
                     $match: {
@@ -58,14 +58,7 @@ export default async (
                   }
                 }
               }
-            },
-            {
-              $skip: skip
-            },
-            {
-              $limit: viewLimit
             }
-
           ],
           totalCount: [
             {
@@ -80,8 +73,7 @@ export default async (
     const posts = result[0].posts ?? []
     const count = result[0]?.totalCount[0]?.count ?? 0
 
-    // await setCache(`userPosts:${user?._id}`, posts, 10 * 60);
-
+    
     let data = {
       list: posts,
       pagination: {
@@ -89,6 +81,8 @@ export default async (
         viewLimit,
       },
     };
+
+    await setCache(`userPosts:${user?._id}`, data, 10 * 60);
 
     return mutationSuccessResponse('successfulOperation', language, data)
   } catch (error) {
