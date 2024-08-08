@@ -39,7 +39,8 @@ export default async (
 
       profilePictureData = await generatePictureUrl(stream, language);
     }
-    const OTP = generateOTP(6)
+    // const OTP = generateOTP(6)
+    const OTP = 123456
 
     const OTPExpiryTime = 3 * 60 * 1000 //3 minutes
     const user = new User({

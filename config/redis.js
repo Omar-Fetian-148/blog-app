@@ -63,4 +63,4 @@ async function dequeue(queueName) {
   }
 }
 
-export { publisher, subscriber, pubsub, setCache, getCache, enqueue, dequeue };
+export { publisher, subscriber, pubsub, cacheClient,  setCache, getCache, enqueue, dequeue };
